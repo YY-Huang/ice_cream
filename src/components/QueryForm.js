@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { dispatch , useSelector } from 'react-redux';
+import { useDispatch , useSelector } from 'react-redux';
 // import { createCustomers } from '../utils/populateQuery'
 import { useForm } from 'react-hook-form';
+import { INITIATE_NEW_SIMULATION } from '../redux/constants';
+import { initiateNewSimulation } from '../redux/actions';
 
 const QueryForm = () => {
     const { register, handleSubmit, errors, setValue } = useForm({
@@ -13,8 +15,12 @@ const QueryForm = () => {
             numberOfSimulations: 1001
         }
     });
+    const dispatch = useDispatch();
+    const onSubmit = data => {
+        const options = data
 
-    const onSubmit = data => console.log(data);
+        dispatch(initiateNewSimulation(options))
+    };
 
     return (
         <form className="QueryForm" onSubmit={handleSubmit(onSubmit)}>
@@ -37,7 +43,7 @@ const QueryForm = () => {
             //    onChange={handleChange}
             />
             {errors.coneMakingTime && errors.coneMakingTime.type === "required" && <p>"Cone Making Time is required"</p>}
-            {errors.coneMakingTime && errors.customerTime.type === "min" && <p>Cone Making Time cannot be 0</p>}
+            {errors.coneMakingTime && errors.coneMakingTime.type === "min" && <p>Cone Making Time cannot be 0</p>}
             <br/>
             <label>Work Hours</label>
             <input
@@ -47,7 +53,7 @@ const QueryForm = () => {
                 // onChange={handleChange}
             />
             {errors.workHours && errors.workHours.type === "required" && <p>"Work Hours is required"</p>}
-            {errors.workHours && errors.customerTime.type === "min" && <p>Work Hours cannot be 0</p>}
+            {errors.workHours && errors.workHours.type === "min" && <p>Work Hours cannot be 0</p>}
             {/* <br/> */}
             <label>Number of Simulations</label>
             <input
@@ -57,7 +63,7 @@ const QueryForm = () => {
             //    onChange={handleChange}
             />
             {errors.numberOfSimulations && errors.numberOfSimulations.type === "required" && <p>"Number of Simulations is required"</p>}
-            {errors.numberOfSimulations && errors.customerTime.type === "min" && <p>Number of Simulations cannot be 0</p>}
+            {errors.numberOfSimulations && errors.numberOfSimulations.type === "min" && <p>Number of Simulations cannot be 0</p>}
             <br/>
             <button type="submit">Submit</button>
         </form>

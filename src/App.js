@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import logger from 'redux-logger';
 
 // Reducers
 import rootReducer from './redux/reducers/rootReducer';
@@ -12,8 +13,8 @@ import QueryForm from './components/QueryForm'
 // Sagas
 // import rootSaga from './redux/sagas';
 
-const sagaMiddleware = createSagaMiddleware()
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware))
+// const sagaMiddleware = createSagaMiddleware()
+const store = createStore(rootReducer, applyMiddleware(logger))
 // sagaMiddleware.run(rootSaga)
 
 class App extends Component {
