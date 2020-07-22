@@ -1,16 +1,16 @@
-const Prob = require('prob.js')
-
+// const Prob = require('prob.js');
+import { Prob } from 'prob.js';
 class Customer {
   constructor(index, arrivalTime, averageArrivalTime, coneMakingTime, averageWaitTime) {
-    this.customerID = `${index}`
+    this.customerID = `${index}`,
     this.arrivalTime = arrivalTime,
-    this.averageArrivalTime= averageArrivalTime,
-    this.coneMakingTime = coneMakingTime
+    this.averageArrivalTime = averageArrivalTime,
+    this.coneMakingTime = coneMakingTime,
     this.averageWait = averageWaitTime || coneMakingTime
   }
 }
 
-const createCustomers = (meanArrivalInterval, meanConeMakingTime, workHours)  => {
+export default function createCustomers (meanArrivalInterval, meanConeMakingTime, workHours) {
     let totalWorkMinutes = workHours * 60
     let queueTime = 0
     let totalCustomers = 1
@@ -48,12 +48,10 @@ const createCustomers = (meanArrivalInterval, meanConeMakingTime, workHours)  =>
         totalCustomers += 1
     }
 
-    return customers
-}  
+    return customers;
+}
+
+// console.log(createCustomers(7, 7, 7))
 
 // let averages = customers.reduce((acc, curr) => acc + curr.averageArrivalTime, 0)
 // console.log('average customer time', (customers.reduce((acc, curr) => acc + curr.averageArrivalTime, 0)) / customers.length)
-
-module.exports = {
-    createCustomers
-}

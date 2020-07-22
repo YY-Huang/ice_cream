@@ -11,11 +11,11 @@ import rootReducer from './redux/reducers/rootReducer';
 import QueryForm from './components/QueryForm'
 
 // Sagas
-// import rootSaga from './redux/sagas';
+import rootSaga from './redux/sagas';
 
-// const sagaMiddleware = createSagaMiddleware()
-const store = createStore(rootReducer, applyMiddleware(logger))
-// sagaMiddleware.run(rootSaga)
+const sagaMiddleware = createSagaMiddleware()
+const store = createStore(rootReducer, applyMiddleware(logger, sagaMiddleware))
+sagaMiddleware.run(rootSaga)
 
 class App extends Component {
   render() {
@@ -23,24 +23,11 @@ class App extends Component {
       <Provider store={store}>
         <div>
           This is the app
-          {console.log('these are my props', this.props)}
-          <QueryForm state={this.props}/>
+          <QueryForm />
         </div>
       </Provider>
     )
   }
 }
-
-// const App = () => {
-//     return (
-//       <Provider store={store}>
-//         <div>
-//           This is the app
-  
-//           <QueryForm onSubmit={handleSubmit}/>
-//         </div>
-//       </Provider>
-//     )
-// }
 
 export default App;
