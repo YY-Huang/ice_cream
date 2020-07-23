@@ -18,11 +18,11 @@ function* initiateNewSimulationSaga(payload) {
     let counter = 0;
 
     try {
-        while (counter < options) {
+        while (counter < numberOfSimulations) {
             const customers = []
     
             for (let i = 0; i <= page; i++) {
-                const newCustomers = yield call(createCustomers(options['customerTime'], options['coneMaking'], options['workHours']))
+                const newCustomers = yield call(createCustomers(customerTime, coneMakingTime, workHours))
                 customers.push(newCustomers)
             }
             yield put({

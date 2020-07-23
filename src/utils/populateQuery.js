@@ -2,13 +2,20 @@
 import { Prob } from 'prob.js';
 class Customer {
   constructor(index, arrivalTime, averageArrivalTime, coneMakingTime, averageWaitTime) {
-    this.customerID = `${index}`,
-    this.arrivalTime = arrivalTime,
-    this.averageArrivalTime = averageArrivalTime,
-    this.coneMakingTime = coneMakingTime,
-    this.averageWait = averageWaitTime || coneMakingTime
+    this.customerID = `${index}`;
+    this.arrivalTime = arrivalTime;
+    this.averageArrivalTime = averageArrivalTime;
+    this.coneMakingTime = coneMakingTime;
+    this.averageWait = averageWaitTime || coneMakingTime;
   }
 }
+
+// class Simulation {
+//     constructor(numOfSimulations) {
+//         this.numOfSimulations = numOfSimulations
+//         this.
+//     }
+// }
 
 export default function createCustomers (meanArrivalInterval, meanConeMakingTime, workHours) {
     let totalWorkMinutes = workHours * 60

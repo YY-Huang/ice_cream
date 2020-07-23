@@ -40,7 +40,6 @@ const QueryForm = () => {
             {errors.customerTime && errors.customerTime.type === "positiveNumber" && (
                 <p>Customer Time must be greater than 0</p>
             )}
-            {/* <br/> */}
             <label>Cone Making Time (mins)</label>
             <input
                ref={
@@ -74,7 +73,6 @@ const QueryForm = () => {
             {errors.workHours && errors.workHours.type === "positiveNumber" && (
                 <p>Work Hours must be greater than 0</p>
             )}
-            {/* <br/> */}
             <label>Number of Simulations</label>
             <input
                ref={
