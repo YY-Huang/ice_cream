@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { useDispatch , useSelector } from 'react-redux';
 // import { createCustomers } from '../utils/populateQuery'
 import { useForm } from 'react-hook-form';
-import { INITIATE_NEW_SIMULATION } from '../redux/constants';
 import { initiateNewSimulation } from '../redux/actions';
 
 const QueryForm = () => {
@@ -17,7 +16,9 @@ const QueryForm = () => {
     });
     const dispatch = useDispatch();
     const onSubmit = data => {
-        const options = data
+        const options = {
+            ...data,
+        }
 
         dispatch(initiateNewSimulation(options))
     };

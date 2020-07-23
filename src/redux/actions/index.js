@@ -8,7 +8,7 @@ import {
     return {
       type: INITIATE_NEW_SIMULATION,
       payload: {
-          options
+          options,
       }
 
     };

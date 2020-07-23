@@ -9,6 +9,7 @@ import rootReducer from './redux/reducers/rootReducer';
 
 // Components
 import QueryForm from './components/QueryForm'
+import Chart from './components/Chart';
 
 // Sagas
 import rootSaga from './redux/sagas';
@@ -24,6 +25,8 @@ class App extends Component {
         <div>
           This is the app
           <QueryForm />
+          This is the chart
+          <Chart />
         </div>
       </Provider>
     )
