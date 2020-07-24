@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { scaleLinear } from 'd3-scale';
 // import  * as d3 from 'd3';
-import { select } from 'd3';
+import { select, line, curveCardinal } from 'd3';
 // import { d3-axis } from 'd3-axis';
 
 
 const Chart = () => {
-    const simulationData = useSelector(state => {
+    /* const simulationData = useSelector(state => {
         const {
             dataReducer : {
                 data,
@@ -26,7 +26,7 @@ const Chart = () => {
         //     console.log(x)
         //  }
         return data
-    });
+    }); */
 
     // const [myState, setMyState] = useState(simulationData)
 
@@ -34,10 +34,14 @@ const Chart = () => {
 
     const svgRef = useRef();
 
-    // Calls once when the DOM element or when the array is changed
+    // Will be called initially and on every data change
     useEffect(() => {
         const svg = select(svgRef.current);
-        svg
+        const myLine = line()
+            .x((value, index) => index*50)
+            .y(value => 150 - value)
+            .curve(curveCardinal);
+        /* svg
           .selectAll("circle")
           .data(testData)
           .join(
@@ -52,7 +56,13 @@ const Chart = () => {
           .attr("r", value => value)
           .attr("cx", value => value * 2)
           .attr("cy", value => value * 2)
-          .attr("stroke", "red");
+          .attr("stroke", "red"); */
+          svg.selectAll("path")
+          .data([testData])
+          .join("path")
+          .attr("d", value => myLine(value))
+          .attr("fill", "none")
+          .attr("stroke", "blue");
     }, [testData])
 
     // d3.select(d3Chart)
@@ -66,7 +76,9 @@ const Chart = () => {
       {/* <div>{JSON.stringify(simulationData)}</div> */}
       <div id="d3Chart"></div>
       <React.Fragment>
-        <svg ref={svgRef}></svg>
+        <svg ref={svgRef}>
+            <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" />
+        </svg>
         <br />
         <button onClick={() => setTestData(testData.map(value => value + 5))}>
           Update Data
