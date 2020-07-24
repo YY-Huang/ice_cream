@@ -26,70 +26,128 @@ const Chart = () => {
         //     console.log('d3 info')
         //     console.log(x)
         //  }
-        return data
+        return [data[0]]
     }); */
 
-    // const [myState, setMyState] = useState(simulationData)
+    const simulationData = useSelector(state => state.dataReducer.data[0])
+    // console.log('simul data', simulationData.map((customer) => customer.arrivalTime))
 
-    const [testData, setTestData] = useState([25, 30, 45, 60, 20, 65, 75])
+    // const arrivalTimes = simulationData.map((customer) => customer[0].arrivalTimes)
+    // console.log('arrival Times', arrivalTimes)
 
-    const svgRef = useRef();
+    const simulRef = useRef();
 
-    
-    // Will be called initially and on every data change
     useEffect(() => {
-        const svg = select(svgRef.current);
+        const svg = select(simulRef.current);
 
-        // Domain - Scale up or down, scaling index values
-        // Visual representation of the values
-        const xScale = scaleLinear()
-          .domain([0, testData.length - 1])
-          .range([0, 300])
+        if (simulationData) {
+            const arrivalTimes = simulationData.map((customer) => customer.arrivalTime)
+            const coneMakingTime = simulationData.map((customer) => customer.coneMakingTime)
+            const averageWaitTime = simulationData.map((customer) => customer.averageWait)
+            
+            const xScale = scaleLinear()
+              .domain([0, arrivalTimes.length - 1])
+              .range([0, arrivalTimes[arrivalTimes.length - 1]])
 
-        // Maps 0 values to the bottom of 150 pixels
-        // Domain - max value is 75 at the top
-        const yScale = scaleLinear()
-          .domain([0,150])
-          .range([150,0])
+            const yScale = scaleLinear()
+            .domain([0, arrivalTimes.length])
+            .range([arrivalTimes.length, 0])
+    
+            const xAxis = axisBottom(xScale)
+              .ticks(arrivalTimes.length)
+              .tickFormat(index => index + 1)
+            svg.select(".simul-x-axis")
+              .style("transform", "translateY(800px)")
+              .call(xAxis);
+    
+            const yAxis = axisRight(yScale)
+            svg.select(".simul-y-axis")
+              .style("transform", "translateX(1500px)")
+              .call(yAxis);
 
-        const xAxis = axisBottom(xScale)
-        svg.select(".x-axis")
-          .style("transform", "translateY(150px)")
-          .call(xAxis);
-
-        const yAxis = axisRight(yScale)
-        svg.select(".y-axis")
-          .style("transform", "translateX(300px)")
-          .call(yAxis);
-
-        const myLine = line()
+            const myLine = line()
             .x((value, index) => xScale(index))
             .y(yScale)
             .curve(curveCardinal);
-        /* svg
-          .selectAll("circle")
-          .data(testData)
-          .join(
-              "circle"
-            // enter => 
-            //   enter.append("circle")
-               //.attr("class", "new"),
-            // update => 
-            //   update.attr("class", "updated"),
-            // exit => exit.remove()
-          )
-          .attr("r", value => value)
-          .attr("cx", value => value * 2)
-          .attr("cy", value => value * 2)
-          .attr("stroke", "red"); */
-          svg.selectAll(".line")
-          .data([testData])
-          .join("path")
-          .attr("class", "line")
-          .attr("d", myLine)
-          .attr("fill", "none")
-          .attr("stroke", "blue");
-    }, [testData])
+
+            svg.selectAll(".line")
+            .data([arrivalTimes])
+            .join("path")
+            .attr("class", "line")
+            .attr("d", myLine)
+            .attr("fill", "none")
+            .attr("stroke", "green");
+        }
+
+
+
+    }, [simulationData, simulRef])
+
+    // const [myState, setMyState] = useState(simulationData)
+
+    // const [testData, setTestData] = useState([25, 30, 45, 60, 20, 65, 75])
+
+    // const svgRef = useRef();
+
+    
+    // Test Data below
+    // Will be called initially and on every data change
+    // useEffect(() => {
+    //     const svg = select(svgRef.current);
+
+    //     // Domain - Scale up or down, scaling index values
+    //     // Visual representation of the values
+    //     const xScale = scaleLinear()
+    //       .domain([0, testData.length - 1])
+    //       .range([0, 300])
+
+    //     // Maps 0 values to the bottom of 150 pixels
+    //     // Domain - max value is 75 at the top
+    //     const yScale = scaleLinear()
+    //       .domain([0,150])
+    //       .range([150,0])
+
+    //     const xAxis = axisBottom(xScale)
+    //       .ticks(testData.length)
+    //       .tickFormat(index => index + 1)
+    //     svg.select(".x-axis")
+    //       .style("transform", "translateY(150px)")
+    //       .call(xAxis);
+
+    //     const yAxis = axisRight(yScale)
+    //     svg.select(".y-axis")
+    //       .style("transform", "translateX(300px)")
+    //       .call(yAxis);
+
+    //     const myLine = line()
+    //         .x((value, index) => xScale(index))
+    //         .y(yScale)
+    //         .curve(curveCardinal);
+    //     /* svg
+    //       .selectAll("circle")
+    //       .data(testData)
+    //       .join(
+    //           "circle"
+    //         // enter => 
+    //         //   enter.append("circle")
+    //            //.attr("class", "new"),
+    //         // update => 
+    //         //   update.attr("class", "updated"),
+    //         // exit => exit.remove()
+    //       )
+    //       .attr("r", value => value)
+    //       .attr("cx", value => value * 2)
+    //       .attr("cy", value => value * 2)
+    //       .attr("stroke", "red"); 
+    //     */
+    //       svg.selectAll(".line")
+    //       .data([testData])
+    //       .join("path")
+    //       .attr("class", "line")
+    //       .attr("d", myLine)
+    //       .attr("fill", "none")
+    //       .attr("stroke", "blue");
+    // }, [testData])
 
     // d3.select(d3Chart)
     //     .data(myState)
@@ -99,11 +157,18 @@ const Chart = () => {
     <div>
       <div>I am a chart!</div>
       <div>This is my data:</div>
-      {/* <div>{JSON.stringify(simulationData)}</div> */}
-      <div id="d3Chart"></div>
+      <div>{JSON.stringify(simulationData)}</div>
+      <br />
       <React.Fragment>
+        <svg ref={simulRef}>
+            <g className="simul-x-axis"></g>
+            <g className="simul-y-axis"></g>
+        </svg>
+      </React.Fragment>
+      
+      {/* <React.Fragment>
         <svg ref={svgRef}>
-            {/* <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" /> */}
+            <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" />
             <g className="x-axis" />
             <g className="y-axis" />
         </svg>
@@ -114,7 +179,7 @@ const Chart = () => {
         <button onClick={() => setTestData(testData.filter(value => value < 35))}>
           Filter Data
         </button>
-      </React.Fragment>
+      </React.Fragment> */}
     </div>
   );
 }

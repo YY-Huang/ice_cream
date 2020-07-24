@@ -12,9 +12,9 @@ function* initiateNewSimulationSaga({ payload }) {
         } 
     } = payload;
 
-    console.log('customer time', typeof(customerTime))
-    console.log('coneMakingTime', typeof(coneMakingTime))
-    console.log('workHours', typeof(workHours))
+    // console.log('customer time', typeof(customerTime))
+    // console.log('coneMakingTime', typeof(coneMakingTime))
+    // console.log('workHours', typeof(workHours))
 
     // clear any previous data when starting a new run
     yield put({
