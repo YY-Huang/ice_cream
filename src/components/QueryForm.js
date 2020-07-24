@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { useDispatch , useSelector } from 'react-redux';
-// import { createCustomers } from '../utils/populateQuery'
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { initiateNewSimulation } from '../redux/actions';
 

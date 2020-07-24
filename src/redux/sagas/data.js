@@ -1,4 +1,4 @@
-import { takeLeading, call, select, put } from 'redux-saga/effects';
+import { takeLeading, call, put } from 'redux-saga/effects';
 import { INITIATE_NEW_SIMULATION, INITIATE_NEW_SIMULATION_SUCCESS, INITIATE_NEW_SIMULATION_FAILURE, PERSIST_DATA_TO_STORE, CLEAR_DATA_FROM_STORE } from '../constants';
 import createCustomers  from './../../utils/populateQuery';
 // console.log(createCustomers)

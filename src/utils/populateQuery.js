@@ -9,14 +9,6 @@ class Customer {
     this.averageWait = averageWaitTime || coneMakingTime;
   }
 }
-
-// class Simulation {
-//     constructor(numOfSimulations) {
-//         this.numOfSimulations = numOfSimulations
-//         this.
-//     }
-// }
-
 export default function createCustomers (meanArrivalInterval, meanConeMakingTime, workHours) {
     meanArrivalInterval = Number(meanArrivalInterval)
     meanConeMakingTime = Number(meanConeMakingTime)
@@ -45,14 +37,17 @@ export default function createCustomers (meanArrivalInterval, meanConeMakingTime
         } else {
             const lastCustomer = customers[customers.length - 1]
             const previousCustomerStartTime = lastCustomer['arrivalTime']
+            // 1.28
             const previousCustomerWaitTime = lastCustomer['averageWait']
+            // 7.10
 
             const nextCustomerStartTime = previousCustomerWaitTime + previousCustomerStartTime
+            // 8.38
             // The difference between the start time of next customer vs last customer start time + cone time needed
             // Checks to see if this is the first customer or not
-            const waitTime = nextCustomerStartTime > queueTime ? currConeTime: ((queueTime - nextCustomerStartTime) + currConeTime)
 
-            console.log('wait time is', waitTime)
+            // queueTime = 1.54
+            const waitTime = nextCustomerStartTime > queueTime ? ((nextCustomerStartTime - queueTime) + currConeTime) : currConeTime
 
             const newCustomer = new Customer(totalCustomers, queueTime, currArrival, currConeTime, waitTime)
             customers.push(newCustomer)
