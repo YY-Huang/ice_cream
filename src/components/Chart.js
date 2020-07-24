@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { scaleLinear } from 'd3-scale';
+// import { scaleLinear } from 'd3-scale';
 // import  * as d3 from 'd3';
-import { select, line, curveCardinal } from 'd3';
+import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear } from 'd3';
 // import { d3-axis } from 'd3-axis';
+import '../styles/Chart.css';
 
 
 const Chart = () => {
@@ -30,16 +31,40 @@ const Chart = () => {
 
     // const [myState, setMyState] = useState(simulationData)
 
-    const [testData, setTestData] = useState([25, 30, 45, 60, 20])
+    const [testData, setTestData] = useState([25, 30, 45, 60, 20, 65, 75])
 
     const svgRef = useRef();
 
+    
     // Will be called initially and on every data change
     useEffect(() => {
         const svg = select(svgRef.current);
+
+        // Domain - Scale up or down, scaling index values
+        // Visual representation of the values
+        const xScale = scaleLinear()
+          .domain([0, testData.length - 1])
+          .range([0, 300])
+
+        // Maps 0 values to the bottom of 150 pixels
+        // Domain - max value is 75 at the top
+        const yScale = scaleLinear()
+          .domain([0,150])
+          .range([150,0])
+
+        const xAxis = axisBottom(xScale)
+        svg.select(".x-axis")
+          .style("transform", "translateY(150px)")
+          .call(xAxis);
+
+        const yAxis = axisRight(yScale)
+        svg.select(".y-axis")
+          .style("transform", "translateX(300px)")
+          .call(yAxis);
+
         const myLine = line()
-            .x((value, index) => index*50)
-            .y(value => 150 - value)
+            .x((value, index) => xScale(index))
+            .y(yScale)
             .curve(curveCardinal);
         /* svg
           .selectAll("circle")
@@ -57,10 +82,11 @@ const Chart = () => {
           .attr("cx", value => value * 2)
           .attr("cy", value => value * 2)
           .attr("stroke", "red"); */
-          svg.selectAll("path")
+          svg.selectAll(".line")
           .data([testData])
           .join("path")
-          .attr("d", value => myLine(value))
+          .attr("class", "line")
+          .attr("d", myLine)
           .attr("fill", "none")
           .attr("stroke", "blue");
     }, [testData])
@@ -77,7 +103,9 @@ const Chart = () => {
       <div id="d3Chart"></div>
       <React.Fragment>
         <svg ref={svgRef}>
-            <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" />
+            {/* <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" /> */}
+            <g className="x-axis" />
+            <g className="y-axis" />
         </svg>
         <br />
         <button onClick={() => setTestData(testData.map(value => value + 5))}>
