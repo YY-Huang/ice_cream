@@ -45,13 +45,15 @@ const Chart = () => {
             const coneMakingTime = simulationData.map((customer) => customer.coneMakingTime)
             const averageWaitTime = simulationData.map((customer) => customer.averageWait)
             
+            // Domain - Scale up or down, scaling index values
+            // Visual representation of the values
             const xScale = scaleLinear()
-              .domain([0, arrivalTimes.length - 1])
-              .range([0, arrivalTimes[arrivalTimes.length - 1]])
+              .domain([0, arrivalTimes.length - 1]) // scale index values
+              .range([0, 1500]) 
 
             const yScale = scaleLinear()
-            .domain([0, arrivalTimes.length])
-            .range([arrivalTimes.length, 0])
+            .domain([0, arrivalTimes[arrivalTimes.length - 1]]) // 0 to max values in Arr
+            .range([1200, 0]) // pixels high to 0
     
             const xAxis = axisBottom(xScale)
               .ticks(arrivalTimes.length)
@@ -168,7 +170,7 @@ const Chart = () => {
       
       {/* <React.Fragment>
         <svg ref={svgRef}>
-            <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" />
+            // <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" />
             <g className="x-axis" />
             <g className="y-axis" />
         </svg>
