@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear } from 'd3';
 // import { d3-axis } from 'd3-axis';
 import '../styles/Chart.css';
+import findMax from './../utils/findMax'
 
 
 const Chart = () => {
@@ -42,29 +43,33 @@ const Chart = () => {
 
         if (simulationData) {
             const arrivalTimes = simulationData.map((customer) => customer.arrivalTime)
+            const averageArrivalTime = simulationData.map((customer) => customer.averageArrivalTime)
             const coneMakingTime = simulationData.map((customer) => customer.coneMakingTime)
             const averageWaitTime = simulationData.map((customer) => customer.averageWait)
+
+            const maxMinutes = findMax(averageWaitTime)
+            console.log('max is', maxMinutes)
             
             // Domain - Scale up or down, scaling index values
             // Visual representation of the values
             const xScale = scaleLinear()
               .domain([0, arrivalTimes.length - 1]) // scale index values
-              .range([0, 1500]) 
+              .range([0, 1400]) 
 
             const yScale = scaleLinear()
-            .domain([0, arrivalTimes[arrivalTimes.length - 1]]) // 0 to max values in Arr
-            .range([1200, 0]) // pixels high to 0
+            .domain([-1, maxMinutes]) // 0 to max values in Arr
+            .range([1150, 0]) // pixels high to 0
     
             const xAxis = axisBottom(xScale)
               .ticks(arrivalTimes.length)
               .tickFormat(index => index + 1)
             svg.select(".simul-x-axis")
-              .style("transform", "translateY(800px)")
+              .style("transform", "translateY(1150px)")
               .call(xAxis);
     
             const yAxis = axisRight(yScale)
             svg.select(".simul-y-axis")
-              .style("transform", "translateX(1500px)")
+              .style("transform", "translateX(1400px)")
               .call(yAxis);
 
             const myLine = line()
@@ -72,13 +77,29 @@ const Chart = () => {
             .y(yScale)
             .curve(curveCardinal);
 
-            svg.selectAll(".line")
-            .data([arrivalTimes])
+            svg.selectAll(".averageArrivalTime")
+            .data([averageArrivalTime])
             .join("path")
             .attr("class", "line")
             .attr("d", myLine)
             .attr("fill", "none")
             .attr("stroke", "green");
+
+            svg.selectAll(".coneMakingTime")
+            .data([coneMakingTime])
+            .join("path")
+            .attr("class", "line")
+            .attr("d", myLine)
+            .attr("fill", "none")
+            .attr("stroke","purple");
+
+            svg.selectAll(".averageWaitTime")
+            .data([averageWaitTime])
+            .join("path")
+            .attr("class", "line")
+            .attr("d", myLine)
+            .attr("fill", "none")
+            .attr("stroke", "red");
         }
 
 
@@ -163,11 +184,12 @@ const Chart = () => {
       <br />
       <React.Fragment>
         <svg ref={simulRef}>
-            <g className="simul-x-axis"></g>
-            <g className="simul-y-axis"></g>
+            <g className="simul-x-axis" />
+            <g className="simul-y-axis" />
         </svg>
       </React.Fragment>
-      
+      <br />
+      <br />
       {/* <React.Fragment>
         <svg ref={svgRef}>
             // <path d="M0, 150, 100, 100, 150, 120" stroke="blue" fill="none" />

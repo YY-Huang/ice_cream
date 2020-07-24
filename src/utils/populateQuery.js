@@ -37,16 +37,10 @@ export default function createCustomers (meanArrivalInterval, meanConeMakingTime
         } else {
             const lastCustomer = customers[customers.length - 1]
             const previousCustomerStartTime = lastCustomer['arrivalTime']
-            // 1.28
             const previousCustomerWaitTime = lastCustomer['averageWait']
-            // 7.10
 
             const nextCustomerStartTime = previousCustomerWaitTime + previousCustomerStartTime
-            // 8.38
             // The difference between the start time of next customer vs last customer start time + cone time needed
-            // Checks to see if this is the first customer or not
-
-            // queueTime = 1.54
             const waitTime = nextCustomerStartTime > queueTime ? ((nextCustomerStartTime - queueTime) + currConeTime) : currConeTime
 
             const newCustomer = new Customer(totalCustomers, queueTime, currArrival, currConeTime, waitTime)
