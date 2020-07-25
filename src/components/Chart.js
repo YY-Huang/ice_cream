@@ -90,13 +90,13 @@ const Chart = () => {
             .attr("fill", "none")
             .attr("stroke", "red");
         }
-    }, [simulationData, simulRef])
+    }, [simulationData, simulRef, simulationIndex])
 
   return (
     <div>
         <br />
         <br />
-        <label for="simulation-index">Simulation Index Number</label>
+        <label htmlFor="simulation-index">Simulation Index Number</label>
         <input type="number" onChange={handleChange} value={currIndex}/>
         <br />
         <svg ref={simulRef}>
