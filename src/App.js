@@ -23,9 +23,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div>
-          This is the app
           <QueryForm />
-          This is the chart
           <Chart />
         </div>
       </Provider>
