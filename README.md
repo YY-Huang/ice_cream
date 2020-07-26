@@ -5,7 +5,9 @@
 A simulation of an ice cream maker during an average day (hours), based on parameters set on a form. 
 
 Red - Average Wait Time
+
 Purple - Cone Making Time
+
 Green - Average Arrival Time
 
 ## Libaries Used
