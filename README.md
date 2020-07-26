@@ -67,7 +67,7 @@ An action will then be called to store the data with the new payload of generate
 
 A 1001 simulation showing the last simulation of 72 customers in an array of objects.
 
-### Chart Componnent
+### Chart Component
 
 The Chart Component will exist as a hook once the reducer data feeds in from the action. 
 
