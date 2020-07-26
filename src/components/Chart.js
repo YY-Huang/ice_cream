@@ -2,14 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, set } from 'd3';
 import '../styles/Chart.css';
-import findMax from './../utils/findMax'
-
+import findMax from './../utils/findMax';
 
 const Chart = () => {
+    // Shows 1 simulation and the average time for the data
     const [currIndex, setCurrIndex] = useState(0);
     const [currAverageWaitTime, setCurrAverageWaitTime] = useState([]);
+
+    // All the X amount of simulations extracted from the reducer store once the dataReducer has data
     const simulationData = useSelector(state => state.dataReducer.data);
     const simulationIndex = simulationData ? simulationData[currIndex] : null;
+    // Returns a mutable object and will persis for the full lifetime of the component
     const simulRef = useRef();
 
     const screenWidth = window.screen.width
@@ -18,7 +21,7 @@ const Chart = () => {
     const handleChange = e => {
         setCurrIndex(e.target.value);
     };
-
+    
     useEffect(() => {
         const svg = select(simulRef.current);
         svg.selectAll("path").remove()
@@ -54,7 +57,7 @@ const Chart = () => {
               .tickFormat(index => index + 1)
                 // .scale(xScale)
             svg.selectAll(".simul-x-axis")
-              .style("transform", `transateY(${height + 10}px)`)
+              .style("transform", `translateY(${height + 10}px)`)
               .call(xAxis);
     
             const yAxis = axisRight(yScale)
@@ -114,16 +117,16 @@ const Chart = () => {
             <br />
                 <form className="simulation-form">
                     <label htmlFor="simulation-index">Simulation Index Number</label>
-                    <input type="number" onChange={handleChange} value={currIndex} />
+                    <input type="number" onChange={handleChange} value={currIndex} min="0"/>
                 </form>
 
                 { currAverageWaitTime.length && 
-                  <p>THe last customer in this simulation will need to wait {currAverageWaitTime[currAverageWaitTime.length-1].toFixed(2)} minutes to be served</p>
+                  <p>The last customer in this simulation will need to wait {currAverageWaitTime[currAverageWaitTime.length-1].toFixed(2)} minutes to be served</p>
                 }
                 <br />
-                <svg ref="{simulRef}">
+                <svg ref={simulRef}>
                 <g className="simul-x-axis" />
-                <g className="simul-x-axis" />
+                <g className="simul-y-axis" />
                 </svg>
                 <span className="y-label">
                     Minutes

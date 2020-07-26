@@ -19,7 +19,6 @@ const QueryForm = () => {
         const options = {
             ...data,
         }
-
         dispatch(initiateNewSimulation(options))
     };
 

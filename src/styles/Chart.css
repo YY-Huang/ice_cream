@@ -11,14 +11,14 @@ svg {
     align-items: center;
 }
 
-.chart > y.label {
+.chart > .y-label {
     position: absolute;
     top: 50%;
     right: -100px;
     transform: translateY(-50%);
 }
 
-.chart > x.label {
+.chart > .x-label {
     position: absolute;
     left: 50%;
     bottom: -100px;
@@ -35,3 +35,5 @@ svg {
 .simulation-form input {
     width: 150px;
 }
+
+

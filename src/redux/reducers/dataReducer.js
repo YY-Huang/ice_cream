@@ -20,7 +20,6 @@ function dataReducer (state = initialState, action) {
               ...action.payload
             ]
           }
-
         default:
           return state;
     }

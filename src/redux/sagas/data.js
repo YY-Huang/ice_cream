@@ -1,7 +1,6 @@
 import { takeLeading, call, put } from 'redux-saga/effects';
 import { INITIATE_NEW_SIMULATION, INITIATE_NEW_SIMULATION_SUCCESS, INITIATE_NEW_SIMULATION_FAILURE, PERSIST_DATA_TO_STORE, CLEAR_DATA_FROM_STORE } from '../constants';
 import createCustomers  from './../../utils/populateQuery';
-// console.log(createCustomers)
 function* initiateNewSimulationSaga({ payload }) {
     const { 
         options : {
@@ -11,10 +10,6 @@ function* initiateNewSimulationSaga({ payload }) {
             numberOfSimulations
         } 
     } = payload;
-
-    // console.log('customer time', typeof(customerTime))
-    // console.log('coneMakingTime', typeof(coneMakingTime))
-    // console.log('workHours', typeof(workHours))
 
     // clear any previous data when starting a new run
     yield put({

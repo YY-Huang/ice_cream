@@ -54,6 +54,3 @@ export default function createCustomers (meanArrivalInterval, meanConeMakingTime
 }
 
 console.log(createCustomers(7, 7, 7))
-
-// let averages = customers.reduce((acc, curr) => acc + curr.averageArrivalTime, 0)
-// console.log('average customer time', (customers.reduce((acc, curr) => acc + curr.averageArrivalTime, 0)) / customers.length)
