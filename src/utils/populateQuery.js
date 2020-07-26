@@ -52,5 +52,3 @@ export default function createCustomers (meanArrivalInterval, meanConeMakingTime
 
     return customers;
 }
-
-console.log(createCustomers(7, 7, 7))

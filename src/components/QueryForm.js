@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { initiateNewSimulation } from '../redux/actions';
 import '../styles/QueryForm.css';
 
 const QueryForm = () => {
-    const { register, handleSubmit, errors, setValue } = useForm({
+    const { register, handleSubmit, errors } = useForm({
         defaultValues: {
             customerTime: 7,
             coneMakingTime: 7,
