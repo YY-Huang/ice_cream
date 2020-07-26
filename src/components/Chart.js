@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear } from 'd3';
+import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, set } from 'd3';
 import '../styles/Chart.css';
 import findMax from './../utils/findMax'
 
 
 const Chart = () => {
-    const [currIndex, setCurrIndex] = useState([0]);
+    const [currIndex, setCurrIndex] = useState(0);
+    const [currAverageWaitTime, setCurrAverageWaitTime] = useState([]);
     const simulationData = useSelector(state => state.dataReducer.data);
     const simulationIndex = simulationData ? simulationData[currIndex] : null;
     const simulRef = useRef();
+
+    const screenWidth = window.screen.width
+    const screenHeight = window.screen.height
 
     const handleChange = e => {
         setCurrIndex(e.target.value);
@@ -24,31 +28,39 @@ const Chart = () => {
             const averageArrivalTime = simulationIndex.map((customer) => customer.averageArrivalTime);
             const coneMakingTime = simulationIndex.map((customer) => customer.coneMakingTime);
             const averageWaitTime = simulationIndex.map((customer) => customer.averageWait);
+            setCurrAverageWaitTime(averageArrivalTime)
 
             const maxMinutes = findMax(averageWaitTime) > findMax(averageArrivalTime) ? findMax(averageWaitTime) : findMax(averageArrivalTime)
             
+            const width = screenWidth * .8
+            const height = screenHeight * .8
+
+            svg
+              .attr("width", width)
+              .attr("height", height)
+
             // Domain - Scale up or down, scaling index values
             // Visual representation of the values
             const xScale = scaleLinear()
               .domain([0, arrivalTimes.length - 1]) // scale index values
-              .range([0, 1400]) 
+              .range([0, width]) 
 
             const yScale = scaleLinear()
-            .domain([-1, maxMinutes + 1]) // 0 to max values in Arr
-            .range([1150, 0]) // pixels high to 0
+            .domain([-1, maxMinutes + 1]) // -1 to max values in Arr
+            .range([height, 0]) // pixels high to 0
     
             const xAxis = axisBottom(xScale)
               .ticks(arrivalTimes.length)
               .tickFormat(index => index + 1)
                 // .scale(xScale)
             svg.selectAll(".simul-x-axis")
-              .style("transform", "translateY(1150px)")
+              .style("transform", `transateY(${height + 10}px)`)
               .call(xAxis);
     
             const yAxis = axisRight(yScale)
                 // .scale(yScale)
             svg.selectAll(".simul-y-axis")
-              .style("transform", "translateX(1400px)")
+              .style("transform", `translateX(${width + 10}px)`)
               .call(yAxis);
 
             const averageArrivalTimeLine = line()
@@ -92,19 +104,35 @@ const Chart = () => {
         }
     }, [simulationData, simulRef, simulationIndex])
 
-  return (
-    <div>
-        <br />
-        <br />
-        <label htmlFor="simulation-index">Simulation Index Number</label>
-        <input type="number" onChange={handleChange} value={currIndex}/>
-        <br />
-        <svg ref={simulRef}>
-            <g className="simul-x-axis" />
-            <g className="simul-y-axis" />
-        </svg>
-    </div>
-  );
+    useEffect(() => {
+        setCurrIndex(0)
+    }, [simulationData])
+
+    return (simulationData && simulationData.length) ? (
+        <div className="chart">
+            <br />
+            <br />
+                <form className="simulation-form">
+                    <label htmlFor="simulation-index">Simulation Index Number</label>
+                    <input type="number" onChange={handleChange} value={currIndex} />
+                </form>
+
+                { currAverageWaitTime.length && 
+                  <p>THe last customer in this simulation will need to wait {currAverageWaitTime[currAverageWaitTime.length-1].toFixed(2)} minutes to be served</p>
+                }
+                <br />
+                <svg ref="{simulRef}">
+                <g className="simul-x-axis" />
+                <g className="simul-x-axis" />
+                </svg>
+                <span className="y-label">
+                    Minutes
+                </span>
+                <span className="x-label">
+                    Ticket Number
+                </span>
+        </div>
+    ) : null
 }
 
 export default Chart;

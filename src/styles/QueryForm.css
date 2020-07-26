@@ -1,0 +1,20 @@
+.query-form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.query-form div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.query-form div input {
+    width: 150px;
+}
+
+.query-form button {
+    margin: 1rem auto 0;
+    width: 100px;
+}

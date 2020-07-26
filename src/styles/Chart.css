@@ -1,6 +1,37 @@
 svg {
     background: #eee;
     overflow: visible;
-    width: 1500px;
-    height: 1200px;
+}
+
+.chart {
+    position: relative;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart > y.label {
+    position: absolute;
+    top: 50%;
+    right: -100px;
+    transform: translateY(-50%);
+}
+
+.chart > x.label {
+    position: absolute;
+    left: 50%;
+    bottom: -100px;
+    transform: translateX(-50%);
+}
+
+.simulation-form {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.simulation-form input {
+    width: 150px;
 }

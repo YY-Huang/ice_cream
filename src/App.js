@@ -3,6 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
+import './styles/index.css';
 
 // Reducers
 import rootReducer from './redux/reducers/rootReducer';
@@ -22,10 +23,11 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div>
+        <main>
+          <span>Ice Cream Simulator</span>
           <QueryForm />
           <Chart />
-        </div>
+        </main>
       </Provider>
     )
   }

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { initiateNewSimulation } from '../redux/actions';
+import '../styles/QueryForm.css';
 
 const QueryForm = () => {
     const { register, handleSubmit, errors, setValue } = useForm({
@@ -23,7 +24,7 @@ const QueryForm = () => {
     };
 
     return (
-        <form className="QueryForm" onSubmit={handleSubmit(onSubmit)}>
+        <form className="query-form" onSubmit={handleSubmit(onSubmit)}>
             <label>Customer Time (mins)</label>
             <input
                ref={
