@@ -1,68 +1,83 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ice Cream Simulator
 
-## Available Scripts
+![Screen Shot 2020-07-26 at 12 02 11 AM](https://user-images.githubusercontent.com/29897267/88471149-6b30c100-ced3-11ea-837e-0ff0b6063e2a.png)
 
-In the project directory, you can run:
+A simulation of an ice cream maker during an average day (hours), based on parameters set on a form. 
 
-### `yarn start`
+Red - Average Wait Time
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Purple - Cone Making Time
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Green - Average Arrival Time
 
-### `yarn test`
+## Libaries Used
+- React
+- Redux
+- Redux-saga
+- D3
+- Prob.js (distribution library for formulated data)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation Guide
 
-### `yarn build`
+1. Clone the repository.
+2. Install the NPM modules by using ```npm i``` in the directory of the cloned repo.
+3. Start the project by using ```npm start```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Great! Happy cone making :)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Introduction
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Mock Data
 
-### `yarn eject`
+In order to understand the data to render and visualize, a mock data needs to be generated.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The mock data was created based on 1 work day scenario, with x hours worked (default 7), customer time in minutes (default 7), and cone making time in minutes(default 7).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Using ```Prob.js```, I was able to use normal distribution for cone making time with a variance of 1, and customer time on an exponential distributed form. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![Screen Shot 2020-07-26 at 12 12 41 AM](https://user-images.githubusercontent.com/29897267/88471234-c0b99d80-ced4-11ea-9d17-694722b256d1.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Each customer was created from a class based structure, using the normal distributed time of arrival to make a queue of customers. 
 
-## Learn More
+The average waiting time was calculated based on the previous customer (not the first, starting from the second) and seeing if the arrival time was greater than the previous customer start time and cone time. If the arrival time was not within the previous customer's time in queue, then the wait time will be set to the cone making time it takes for that customer to finish. Otherwise, it will be added from the difference of the last customer's time as a pointer. 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+class Customer {
+  constructor(index, arrivalTime, averageArrivalTime, coneMakingTime, averageWaitTime) {
+    this.customerID = `${index}`;
+    this.arrivalTime = arrivalTime;
+    this.averageArrivalTime = averageArrivalTime;
+    this.coneMakingTime = coneMakingTime;
+    this.averageWait = averageWaitTime || coneMakingTime;
+  }
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Front End
 
-### Code Splitting
+```QueryForm Component```  is used to gather the parameters of the user's inputs to be dispatched as an action.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+The action is then intercepted by ```redux-saga``` as a middleware. It will take the payload from the dispatched action and feed that into the function to create the list of class based Customers. 
 
-### Analyzing the Bundle Size
+Within the saga middleware, a generator is used to create the simulated class based Customers based on x number of simulations inputted. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+An action will then be called to store the data with the new payload of generated customers of x amount of simulations. 
 
-### Making a Progressive Web App
+![Screen Shot 2020-07-26 at 12 24 19 AM](https://user-images.githubusercontent.com/29897267/88471341-63265080-ced6-11ea-8b78-9a3c6ad44b5c.png)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+A 1001 simulation showing the last simulation of 72 customers in an array of objects.
 
-### Advanced Configuration
+### Chart Component
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+The Chart Component will exist as a hook once the reducer data feeds in from the action. 
 
-### Deployment
+An SVG is added with the current index of the simulation we are in to track the data and populate arrays to plot lines for D3. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+A dynamic display of the data flow of different simulations can be tracked. 
 
-### `yarn build` fails to minify
+## Thoughts?
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This was a very fun project to build out -- especially using D3. Working with any type of data would be great to visualize, which is why I decided to use D3. It was very front end focused to show the different simulations as I personally am more apt to see how data interacts better if there is a visual aid. Explaining large amounts of data is hard if a person cannot conceive it. 
+
+
+
